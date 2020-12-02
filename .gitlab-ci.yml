@@ -1,0 +1,60 @@
+stages:
+  - build
+  - test
+
+.versions:
+  before_script:
+    - rustc --version
+    - cargo --version
+
+.build:
+  stage: build
+  image: rust:latest
+  extends:
+    - .versions
+  script:
+    - cargo build --verbose
+  artifacts:
+    paths:
+      - target
+    expire_in: 2 hours
+  tags:
+    - docker
+
+.test:
+  stage: test
+  image: rust:latest
+  extends:
+    - .versions
+  script:
+    - cargo test --workspace --verbose
+  tags:
+    - docker
+
+# Build
+
+build:latest:
+  image: rust:latest
+  extends:
+    - .build
+
+build:nightly:
+  image: rustlang/rust:nightly
+  extends:
+    - .build
+
+# Test
+
+test:latest:
+  image: rust:latest
+  extends:
+    - .test
+  needs:
+    - build:latest
+
+test:nightly:
+  image: rustlang/rust:nightly
+  extends:
+    - .test
+  needs:
+    - build:nightly
