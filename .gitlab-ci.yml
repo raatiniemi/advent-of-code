@@ -37,6 +37,8 @@ test:
     grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o coverage.info
     lcov -l coverage.info
   coverage: '/Total:\|\s*(\d+\.\d+)%/'
+  variables:
+    LLVM_PROFILE_FILE: "advent-of-code-%p-%m.profraw"
   needs:
     - build
   tags:
