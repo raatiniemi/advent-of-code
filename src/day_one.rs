@@ -1,22 +1,23 @@
 use crate::Difficulty;
 
+const EXPECTED_SUM: i32 = 2020;
+
 pub fn calculate_answer(input: Vec<i32>, difficulty: Difficulty) -> Option<i32> {
-    let expected_sum = 2020;
     if difficulty == Difficulty::Bonus {
-        with_three_values(&input, expected_sum)
+        with_three_values(&input)
     } else {
-        with_two_values(input, expected_sum)
+        with_two_values(input)
     }
 }
 
-fn with_three_values(input: &Vec<i32>, expected_sum: i32) -> Option<i32> {
+fn with_three_values(input: &Vec<i32>) -> Option<i32> {
     let mut value: Option<i32> = None;
 
     'main: for first in input {
         for second in input {
             for third in input {
                 let sum = first + second + third;
-                if sum != expected_sum {
+                if sum != EXPECTED_SUM {
                     continue;
                 }
 
@@ -32,13 +33,13 @@ fn with_three_values(input: &Vec<i32>, expected_sum: i32) -> Option<i32> {
     value
 }
 
-fn with_two_values(input: Vec<i32>, expected_sum: i32) -> Option<i32> {
+fn with_two_values(input: Vec<i32>) -> Option<i32> {
     let mut value: Option<i32> = None;
 
     'main: for lhs in &input {
         for rhs in &input {
             let sum = lhs + rhs;
-            if sum != expected_sum {
+            if sum != EXPECTED_SUM {
                 continue;
             }
 
