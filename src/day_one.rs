@@ -4,18 +4,18 @@ const EXPECTED_SUM: i32 = 2020;
 
 pub fn calculate_answer(input: Vec<i32>, difficulty: Difficulty) -> Option<i32> {
     if difficulty == Difficulty::Bonus {
-        with_three_values(&input)
+        with_three_values(input)
     } else {
         with_two_values(input)
     }
 }
 
-fn with_three_values(input: &Vec<i32>) -> Option<i32> {
+fn with_three_values(input: Vec<i32>) -> Option<i32> {
     let mut value: Option<i32> = None;
 
-    'main: for first in input {
-        for second in input {
-            for third in input {
+    'main: for first in &input {
+        for second in &input {
+            for third in &input {
                 let sum = first + second + third;
                 if sum != EXPECTED_SUM {
                     continue;
