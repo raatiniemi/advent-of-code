@@ -1,7 +1,7 @@
-mod day_one;
-
 use std::env;
 use std::fs;
+
+mod day_one;
 
 #[derive(PartialEq)]
 pub enum Mode {
@@ -11,11 +11,11 @@ pub enum Mode {
 
 fn main() {
     let mode = read_mode();
-    let input: Vec<i32> = fs::read_to_string("input/1")
+    let input: Vec<String> = fs::read_to_string("input/1")
         .expect("Unable to read input file")
         .split("\n")
         .filter(|value| { !value.is_empty() })
-        .map(|value| { value.parse::<i32>().unwrap() })
+        .map(|value| { String::from(value) })
         .collect();
 
     let value = day_one::calculate_answer(input, mode);

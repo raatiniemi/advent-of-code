@@ -2,11 +2,15 @@ use crate::Mode;
 
 const EXPECTED_SUM: i32 = 2020;
 
-pub fn calculate_answer(input: Vec<i32>, mode: Mode) -> Option<i32> {
+pub fn calculate_answer(input: Vec<String>, mode: Mode) -> Option<i32> {
+    let values: Vec<i32> = input.iter()
+        .map(|value| { value.parse::<i32>().unwrap() })
+        .collect();
+
     if mode == Mode::Bonus {
-        calculate_bonus_answer(input)
+        calculate_bonus_answer(values)
     } else {
-        calculate_standard_answer(input)
+        calculate_standard_answer(values)
     }
 }
 
@@ -65,7 +69,9 @@ mod tests {
         let expected: Option<i32> = Some(514579);
 
         let actual = calculate_answer(
-            TEST_INPUT.to_vec(),
+            TEST_INPUT.iter()
+                .map(|value| { value.to_string() })
+                .collect(),
             Mode::Standard,
         );
 
@@ -77,7 +83,9 @@ mod tests {
         let expected: Option<i32> = Some(241861950);
 
         let actual = calculate_answer(
-            TEST_INPUT.to_vec(),
+            TEST_INPUT.iter()
+                .map(|value| { value.to_string() })
+                .collect(),
             Mode::Bonus,
         );
 
