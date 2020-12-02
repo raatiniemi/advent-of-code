@@ -53,3 +53,34 @@ fn with_two_values(input: Vec<i32>) -> Option<i32> {
 
     value
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const TEST_INPUT: [i32; 6] = [1721, 979, 366, 299, 675, 1456];
+
+    #[test]
+    fn test_standard_mode() {
+        let expected: Option<i32> = Some(514579);
+
+        let actual = calculate_answer(
+            TEST_INPUT.to_vec(),
+            Mode::Standard,
+        );
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_bonus_mode() {
+        let expected: Option<i32> = Some(241861950);
+
+        let actual = calculate_answer(
+            TEST_INPUT.to_vec(),
+            Mode::Bonus,
+        );
+
+        assert_eq!(expected, actual);
+    }
+}
