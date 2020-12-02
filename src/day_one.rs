@@ -4,13 +4,13 @@ const EXPECTED_SUM: i32 = 2020;
 
 pub fn calculate_answer(input: Vec<i32>, mode: Mode) -> Option<i32> {
     if mode == Mode::Bonus {
-        with_three_values(input)
+        calculate_bonus_answer(input)
     } else {
-        with_two_values(input)
+        calculate_standard_answer(input)
     }
 }
 
-fn with_three_values(input: Vec<i32>) -> Option<i32> {
+fn calculate_bonus_answer(input: Vec<i32>) -> Option<i32> {
     let mut value: Option<i32> = None;
 
     'main: for first in &input {
@@ -33,7 +33,7 @@ fn with_three_values(input: Vec<i32>) -> Option<i32> {
     value
 }
 
-fn with_two_values(input: Vec<i32>) -> Option<i32> {
+fn calculate_standard_answer(input: Vec<i32>) -> Option<i32> {
     let mut value: Option<i32> = None;
 
     'main: for lhs in &input {
