@@ -2,16 +2,17 @@ stages:
   - build
   - test
 
-.versions:
+variables:
+  RUSTFLAGS: "-Zinstrument-coverage"
+
+build:
+  stage: build
+  image: rustlang/rust:nightly
   before_script:
     - rustc --version
     - cargo --version
-
-.build:
-  stage: build
-  image: rust:latest
-  extends:
-    - .versions
+    - rustup --version
+    - rustup component add llvm-tools-preview
   script:
     - cargo build --verbose
   artifacts:
@@ -21,40 +22,22 @@ stages:
   tags:
     - docker
 
-.test:
+test:
   stage: test
-  image: rust:latest
-  extends:
-    - .versions
-  script:
-    - cargo test --workspace --verbose
+  image: rustlang/rust:nightly
+  before_script:
+    - rustc --version
+    - cargo --version
+    - rustup --version
+    - rustup component add llvm-tools-preview
+  script: |
+    apt-get update -qq && apt-get install -y -qq lcov --no-install-recommends
+    cargo install --color=always --force grcov
+    cargo test --workspace --verbose
+    grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o coverage.info
+    lcov -l coverage.info
+  coverage: '/Total:\|\s*(\d+\.\d+)%/'
+  needs:
+    - build
   tags:
     - docker
-
-# Build
-
-build:latest:
-  image: rust:latest
-  extends:
-    - .build
-
-build:nightly:
-  image: rustlang/rust:nightly
-  extends:
-    - .build
-
-# Test
-
-test:latest:
-  image: rust:latest
-  extends:
-    - .test
-  needs:
-    - build:latest
-
-test:nightly:
-  image: rustlang/rust:nightly
-  extends:
-    - .test
-  needs:
-    - build:nightly
