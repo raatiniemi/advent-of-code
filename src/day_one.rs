@@ -1,9 +1,9 @@
-use crate::Difficulty;
+use crate::Mode;
 
 const EXPECTED_SUM: i32 = 2020;
 
-pub fn calculate_answer(input: Vec<i32>, difficulty: Difficulty) -> Option<i32> {
-    if difficulty == Difficulty::Bonus {
+pub fn calculate_answer(input: Vec<i32>, mode: Mode) -> Option<i32> {
+    if mode == Mode::Bonus {
         with_three_values(input)
     } else {
         with_two_values(input)
