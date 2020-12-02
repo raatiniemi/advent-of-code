@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="channel" value="DEFAULT" />
+    <option name="channel" value="NIGHTLY" />
     <option name="command" value="run --package advent-of-code --bin advent-of-code -- --mode=bonus" />
     <option name="allFeatures" value="false" />
     <option name="emulateTerminal" value="false" />
