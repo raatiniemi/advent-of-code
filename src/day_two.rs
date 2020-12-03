@@ -7,16 +7,53 @@ struct PolicyWithPassword {
     password: String,
 }
 
-pub fn calculate_answer(input: Vec<String>, _mode: Mode) -> Option<i32> {
+pub fn calculate_answer(input: Vec<String>, mode: Mode) -> Option<i32> {
     let number_of_valid_passwords = input.iter()
         .map(|v| { parse_raw_to_policy_with_password(String::from(v)) })
-        .filter(|v| { is_password_valid(v.clone()) })
+        .filter(|v| {
+            if mode == Mode::Bonus {
+                is_password_valid_for_bonus_policy(v.clone())
+            } else {
+                is_password_valid_for_standard_policy(v.clone())
+            }
+        })
         .count() as i32;
 
     return Some(number_of_valid_passwords);
 }
 
-fn is_password_valid(configuration: PolicyWithPassword) -> bool {
+fn is_password_valid_for_bonus_policy(configuration: PolicyWithPassword) -> bool {
+    let (first_index, second_index) = configuration.indexes;
+
+    let first_character_value = character_at_index(first_index, &configuration.password);
+    let second_character_value = character_at_index(second_index, &configuration.password);
+
+    return match (first_character_value, second_character_value) {
+        (Some(first_character), Some(second_character)) => {
+            match_exclusive(&first_character, &second_character, &configuration.character)
+        }
+        _ => false
+    };
+}
+
+fn character_at_index(index: i32, s: &String) -> Option<String> {
+    let position = index as usize;
+    if position > s.len() {
+        return None;
+    }
+
+    return s.chars()
+        .nth(position - 1)
+        .map(|v| { String::from(v) });
+}
+
+/// Check whether the either first_character or second_character matches the character.
+fn match_exclusive(first_character: &String, second_character: &String, character: &String) -> bool {
+    (first_character.eq(character) && !second_character.eq(character))
+        || (!first_character.eq(character) && second_character.eq(character))
+}
+
+fn is_password_valid_for_standard_policy(configuration: PolicyWithPassword) -> bool {
     let number_of_characters = count_number_of_characters_in_password(
         configuration.password,
         configuration.character,
@@ -96,6 +133,20 @@ mod test {
                 .map(|value| { String::from(*value) })
                 .collect(),
             Mode::Standard,
+        );
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_bonus_mode() {
+        let expected: Option<i32> = Some(1);
+
+        let actual = calculate_answer(
+            TEST_INPUT.iter()
+                .map(|value| { String::from(*value) })
+                .collect(),
+            Mode::Bonus,
         );
 
         assert_eq!(expected, actual);

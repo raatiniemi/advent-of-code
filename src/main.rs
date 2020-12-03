@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 
 mod day_one;
+mod day_two;
 
 #[derive(PartialEq)]
 pub enum Mode {
