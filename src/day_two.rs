@@ -7,43 +7,13 @@ struct PolicyWithPassword {
     password: String,
 }
 
-fn calculate_answer(input: Vec<String>, filter: &dyn Fn(PolicyWithPassword) -> bool) -> Option<i32> {
+fn calculate_answer(input: Vec<String>, is_password_valid: &dyn Fn(PolicyWithPassword) -> bool) -> Option<i32> {
     let number_of_valid_passwords = input.iter()
-        .map(|v| { parse_raw_to_policy_with_password(String::from(v)) })
-        .filter(|v| { filter(v.clone()) })
+        .map(|v| { parse_raw_to_policy_with_password(v.to_string()) })
+        .filter(|v| { is_password_valid(v.clone()) })
         .count() as i32;
 
     return Some(number_of_valid_passwords);
-}
-
-fn is_password_valid_for_bonus_policy(configuration: PolicyWithPassword) -> bool {
-    let (first_index, second_index) = configuration.indexes;
-
-    let first_character_value = character_at_index(first_index - 1, &configuration.password);
-    let second_character_value = character_at_index(second_index - 1, &configuration.password);
-
-    return match (first_character_value, second_character_value) {
-        (Some(first_character), Some(second_character)) => {
-            match_exclusive(&first_character, &second_character, &configuration.character)
-        }
-        _ => false
-    };
-}
-
-/// Check whether the either first_character or second_character matches the character.
-fn match_exclusive(first_character: &String, second_character: &String, character: &String) -> bool {
-    (first_character.eq(character) && !second_character.eq(character))
-        || (!first_character.eq(character) && second_character.eq(character))
-}
-
-fn is_password_valid_for_standard_policy(configuration: PolicyWithPassword) -> bool {
-    let number_of_characters = count_number_of_characters_in_password(
-        configuration.password,
-        configuration.character,
-    );
-
-    let (min_length, max_length) = configuration.indexes;
-    return min_length <= number_of_characters && number_of_characters <= max_length;
 }
 
 /// Parse the raw value into the `PolicyWithPassword`.
@@ -73,14 +43,17 @@ fn parse_raw_to_policy_with_password(raw: String) -> PolicyWithPassword {
 fn split_raw_into_segments(raw: String) -> Vec<String> {
     raw.split(" ")
         .map(|v| { v.trim_end_matches(":") })
-        .map(|v| { String::from(v) })
+        .map(|v| { v.to_string() })
         .collect()
 }
 
 fn parse_indexes_from_segment(segment: &str) -> (i32, i32) {
     let indexes: Vec<i32> = segment.split('-')
-        .map(|v| { String::from(v) })
-        .map(|v| { v.parse::<i32>().unwrap() })
+        .map(|v| { v.to_string() })
+        .map(|v| {
+            v.parse::<i32>()
+                .expect("Expect valid i32 value when parsing indexes from segment")
+        })
         .collect();
 
     if indexes.len() != 2 {
@@ -89,49 +62,98 @@ fn parse_indexes_from_segment(segment: &str) -> (i32, i32) {
     (indexes[0], indexes[1])
 }
 
-fn count_number_of_characters_in_password(password: String, character: String) -> i32 {
-    let number_of_characters = password.chars()
-        .map(|v| { String::from(v) })
+fn is_password_valid_for_part_one(configuration: PolicyWithPassword) -> bool {
+    let number_of_characters = count_number_of_characters_in_password(
+        configuration.character,
+        configuration.password,
+    );
+
+    let (min_length, max_length) = configuration.indexes;
+    min_length <= number_of_characters && number_of_characters <= max_length
+}
+
+fn count_number_of_characters_in_password(character: String, password: String) -> i32 {
+    password.chars()
+        .map(|v| { v.to_string() })
         .filter(|v| { character.eq(v) })
-        .count() as i32;
-    number_of_characters
+        .count() as i32
+}
+
+fn is_password_valid_for_part_two(configuration: PolicyWithPassword) -> bool {
+    let (first_index, second_index) = configuration.indexes;
+
+    let first_character_value = character_at_index(first_index - 1, &configuration.password);
+    let second_character_value = character_at_index(second_index - 1, &configuration.password);
+
+    match (first_character_value, second_character_value) {
+        (Some(character_at_first_index), Some(character_at_second_index)) => {
+            match_exclusive(&character_at_first_index, &character_at_second_index, &configuration.character)
+        }
+        _ => false
+    }
+}
+
+/// Check whether the either first_character or second_character matches the character.
+fn match_exclusive(character_at_first_index: &String, character_at_second_index: &String, character_to_match: &String) -> bool {
+    (character_at_first_index.eq(character_to_match) || character_at_second_index.eq(character_to_match))
+        && character_at_first_index.ne(character_at_second_index)
 }
 
 #[cfg(test)]
 mod test {
+    use advent_of_code::read_contents_of_file;
+
     use super::*;
 
-    const TEST_INPUT: [&str; 3] = [
-        "1-3 a: abcde",
-        "1-3 b: cdefg",
-        "2-9 c: ccccccccc"
-    ];
-
     #[test]
-    fn test_standard_mode() {
+    fn day_two_part_one_with_example() {
+        let input: Vec<String> = Vec::from([
+            "1-3 a: abcde".to_string(),
+            "1-3 b: cdefg".to_string(),
+            "2-9 c: ccccccccc".to_string()
+        ]);
         let expected: Option<i32> = Some(2);
 
-        let actual = calculate_answer(
-            TEST_INPUT.iter()
-                .map(|value| { String::from(*value) })
-                .collect(),
-            &is_password_valid_for_standard_policy,
-        );
+        let actual = calculate_answer(input, &is_password_valid_for_part_one);
 
+        println!("Day #2 (part one) with example: {}", actual.unwrap());
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn test_bonus_mode() {
+    fn day_two_part_one_with_input() {
+        let input = read_contents_of_file("input/2");
+        let expected: Option<i32> = Some(418);
+
+        let actual = calculate_answer(input, &is_password_valid_for_part_one);
+
+        println!("Day #2 (part one) with input: {}", actual.unwrap());
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn day_two_part_two_with_example() {
+        let input: Vec<String> = Vec::from([
+            "1-3 a: abcde".to_string(),
+            "1-3 b: cdefg".to_string(),
+            "2-9 c: ccccccccc".to_string()
+        ]);
         let expected: Option<i32> = Some(1);
 
-        let actual = calculate_answer(
-            TEST_INPUT.iter()
-                .map(|value| { String::from(*value) })
-                .collect(),
-            &is_password_valid_for_bonus_policy,
-        );
+        let actual = calculate_answer(input, &is_password_valid_for_part_two);
 
+        println!("Day #2 (part two) with example: {}", actual.unwrap());
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn day_two_part_two_with_input() {
+        let input = read_contents_of_file("input/2");
+        let expected: Option<i32> = Some(616);
+
+        let actual = calculate_answer(input, &is_password_valid_for_part_two);
+
+        println!("Day #2 (part two) with input: {}", actual.unwrap());
         assert_eq!(expected, actual);
     }
 }
