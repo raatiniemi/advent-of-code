@@ -1,4 +1,3 @@
-use crate::Mode;
 use crate::lib::character_at_index;
 
 #[derive(Eq, PartialEq, Clone)]
@@ -8,16 +7,10 @@ struct PolicyWithPassword {
     password: String,
 }
 
-pub fn calculate_answer(input: Vec<String>, mode: Mode) -> Option<i32> {
+fn calculate_answer(input: Vec<String>, filter: &dyn Fn(PolicyWithPassword) -> bool) -> Option<i32> {
     let number_of_valid_passwords = input.iter()
         .map(|v| { parse_raw_to_policy_with_password(String::from(v)) })
-        .filter(|v| {
-            if mode == Mode::Bonus {
-                is_password_valid_for_bonus_policy(v.clone())
-            } else {
-                is_password_valid_for_standard_policy(v.clone())
-            }
-        })
+        .filter(|v| { filter(v.clone()) })
         .count() as i32;
 
     return Some(number_of_valid_passwords);
@@ -122,7 +115,7 @@ mod test {
             TEST_INPUT.iter()
                 .map(|value| { String::from(*value) })
                 .collect(),
-            Mode::Standard,
+            &is_password_valid_for_standard_policy,
         );
 
         assert_eq!(expected, actual);
@@ -136,7 +129,7 @@ mod test {
             TEST_INPUT.iter()
                 .map(|value| { String::from(*value) })
                 .collect(),
-            Mode::Bonus,
+            &is_password_valid_for_bonus_policy,
         );
 
         assert_eq!(expected, actual);

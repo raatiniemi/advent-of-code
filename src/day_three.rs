@@ -1,7 +1,6 @@
 use std::ops::Add;
 
 use crate::lib::character_at_index;
-use crate::Mode;
 
 const CHARACTER_FOR_TREE: &str = "#";
 const WALK: Point = Point { x: 3, y: 1 };
@@ -23,7 +22,7 @@ impl Add for Point {
     }
 }
 
-pub fn calculate_answer(input: Vec<String>, _mode: Mode) -> Option<i32> {
+pub fn calculate_answer(input: Vec<String>) -> Option<i32> {
     let start_position = Point { x: 0, y: 0 };
 
     return calculate_number_of_trees(start_position, input);
@@ -84,7 +83,6 @@ mod test {
             TEST_INPUT.iter()
                 .map(|value| { String::from(*value) })
                 .collect(),
-            Mode::Standard,
         );
 
         assert_eq!(expected, actual);
