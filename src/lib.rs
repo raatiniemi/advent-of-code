@@ -1,0 +1,32 @@
+/// Read character at index from String.
+///
+/// With a valid index, the character (as [String]) at the index will be returned as [Option.Some].
+///
+/// ```rust
+/// use advent_of_code::character_at_index;
+///
+/// let value = String::from("abc");
+/// let character = character_at_index(1, &value);
+/// assert_eq!(character.is_some(), true);
+/// assert_eq!(character.unwrap(), String::from("b"));
+/// ```
+///
+/// With an invalid index, [Option.None] will be returned.
+///
+/// ```rust
+/// use advent_of_code::character_at_index;
+///
+/// let value = String::from("abc");
+/// let character = character_at_index(7, &value);
+/// assert_eq!(character.is_none(), true);
+/// ```
+pub fn character_at_index(index: i32, s: &String) -> Option<String> {
+    let index = index as usize;
+    if index >= s.len() {
+        return None;
+    }
+
+    return s.chars()
+        .nth(index)
+        .map(|v| { String::from(v) });
+}

@@ -1,4 +1,5 @@
 use crate::Mode;
+use crate::lib::character_at_index;
 
 #[derive(Eq, PartialEq, Clone)]
 struct PolicyWithPassword {
@@ -25,8 +26,8 @@ pub fn calculate_answer(input: Vec<String>, mode: Mode) -> Option<i32> {
 fn is_password_valid_for_bonus_policy(configuration: PolicyWithPassword) -> bool {
     let (first_index, second_index) = configuration.indexes;
 
-    let first_character_value = character_at_index(first_index, &configuration.password);
-    let second_character_value = character_at_index(second_index, &configuration.password);
+    let first_character_value = character_at_index(first_index - 1, &configuration.password);
+    let second_character_value = character_at_index(second_index - 1, &configuration.password);
 
     return match (first_character_value, second_character_value) {
         (Some(first_character), Some(second_character)) => {
@@ -34,17 +35,6 @@ fn is_password_valid_for_bonus_policy(configuration: PolicyWithPassword) -> bool
         }
         _ => false
     };
-}
-
-fn character_at_index(index: i32, s: &String) -> Option<String> {
-    let position = index as usize;
-    if position > s.len() {
-        return None;
-    }
-
-    return s.chars()
-        .nth(position - 1)
-        .map(|v| { String::from(v) });
 }
 
 /// Check whether the either first_character or second_character matches the character.
