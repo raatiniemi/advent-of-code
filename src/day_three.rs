@@ -4,6 +4,7 @@ use crate::lib::character_at_index;
 use crate::Mode;
 
 const CHARACTER_FOR_TREE: &str = "#";
+const WALK: Point = Point { x: 3, y: 1 };
 
 #[derive(Debug, Clone, Copy)]
 struct Point {
@@ -23,35 +24,38 @@ impl Add for Point {
 }
 
 pub fn calculate_answer(input: Vec<String>, _mode: Mode) -> Option<i32> {
+    let start_position = Point { x: 0, y: 0 };
+
+    return calculate_number_of_trees(start_position, input);
+}
+
+fn calculate_number_of_trees(start_position: Point, input: Vec<String>) -> Option<i32> {
     let first = input.first();
     if first.is_none() {
         return None;
     }
 
     let max_x = first.unwrap().len() as i32;
-    let character_for_tree = String::from(CHARACTER_FOR_TREE);
-    let walk = Point { x: 3, y: 1 };
 
     let mut trees = 0;
-    let mut position = Point { x: 0, y: 0 };
-
+    let mut position = start_position;
     for row in input {
         if position.y == 0 {
-            position = position + walk;
+            position = position + WALK;
             continue;
         }
 
         let character = character_at_index(position.x, &row).unwrap();
-        if character.eq(&character_for_tree) {
+        if character.eq(&CHARACTER_FOR_TREE.to_string()) {
             trees += 1;
         }
 
-        position = position + walk;
+        position = position + WALK;
         if position.x >= max_x {
             position.x -= max_x;
         }
     }
-    return Some(trees);
+    Some(trees)
 }
 
 #[cfg(test)]
