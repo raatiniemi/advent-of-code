@@ -4,6 +4,7 @@ use std::fs;
 mod lib;
 mod day_one;
 mod day_two;
+mod day_three;
 
 #[derive(PartialEq)]
 pub enum Mode {
