@@ -28,6 +28,7 @@ pub fn calculate_answer(input: Vec<String>, _mode: Mode) -> Option<i32> {
         return None;
     }
 
+    let max_x = first.unwrap().len() as i32;
     let character_for_tree = String::from(CHARACTER_FOR_TREE);
     let walk = Point { x: 3, y: 1 };
 
@@ -46,8 +47,6 @@ pub fn calculate_answer(input: Vec<String>, _mode: Mode) -> Option<i32> {
         }
 
         position = position + walk;
-
-        let max_x = row.len() as i32;
         if position.x >= max_x {
             position.x -= max_x;
         }
