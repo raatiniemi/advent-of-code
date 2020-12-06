@@ -5,8 +5,8 @@ pub fn read_contents_of_file(path: &str) -> Vec<String> {
     return fs::read_to_string(path)
         .expect(&format!("Unable to read file at path {}", path).as_str())
         .split("\n")
-        .filter(|value| { !value.is_empty() })
-        .map(|value| { String::from(value) })
+        .filter(|v| { !v.is_empty() })
+        .map(|v| { v.to_string() })
         .collect();
 }
 
