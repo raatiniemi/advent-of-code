@@ -107,11 +107,7 @@ mod test {
 
     #[test]
     fn day_two_part_one_with_example() {
-        let input: Vec<String> = Vec::from([
-            "1-3 a: abcde".to_string(),
-            "1-3 b: cdefg".to_string(),
-            "2-9 c: ccccccccc".to_string()
-        ]);
+        let input = read_contents_of_file("input/2-example");
         let expected: Option<i32> = Some(2);
 
         let actual = calculate_answer(input, &is_password_valid_for_part_one);
@@ -133,11 +129,7 @@ mod test {
 
     #[test]
     fn day_two_part_two_with_example() {
-        let input: Vec<String> = Vec::from([
-            "1-3 a: abcde".to_string(),
-            "1-3 b: cdefg".to_string(),
-            "2-9 c: ccccccccc".to_string()
-        ]);
+        let input = read_contents_of_file("input/2-example");
         let expected: Option<i32> = Some(1);
 
         let actual = calculate_answer(input, &is_password_valid_for_part_two);

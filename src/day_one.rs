@@ -34,7 +34,10 @@ mod tests {
 
     #[test]
     fn day_one_part_one_with_example() {
-        let input: Vec<i32> = Vec::from([1721, 979, 366, 299, 675, 1456]);
+        let input = read_contents_of_file("input/1-example")
+            .iter()
+            .map(|v| { v.parse::<i32>().unwrap() })
+            .collect();
         let expected: Option<i32> = Some(514579);
 
         let actual = calculate_part_one(input);
@@ -59,7 +62,10 @@ mod tests {
 
     #[test]
     fn day_one_part_two_with_example() {
-        let input: Vec<i32> = Vec::from([1721, 979, 366, 299, 675, 1456]);
+        let input = read_contents_of_file("input/1-example")
+            .iter()
+            .map(|v| { v.parse::<i32>().unwrap() })
+            .collect();
         let expected: Option<i32> = Some(241861950);
 
         let actual = calculate_part_two(input);

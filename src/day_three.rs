@@ -82,19 +82,7 @@ mod test {
 
     #[test]
     fn day_three_part_one_with_example() {
-        let input: Vec<&str> = Vec::from([
-            "..##.......",
-            "#...#...#..",
-            ".#....#..#.",
-            "..#.#...#.#",
-            ".#...##..#.",
-            "..#.##.....",
-            ".#.#.#....#",
-            ".#........#",
-            "#.##...#...",
-            "#...##....#",
-            ".#..#...#.#"
-        ]);
+        let input = read_contents_of_file("input/3-example");
         let expected: Option<i32> = Some(7);
 
         let actual = calculate_part_one(
@@ -124,19 +112,7 @@ mod test {
 
     #[test]
     fn day_three_part_two_with_example() {
-        let input: Vec<&str> = Vec::from([
-            "..##.......",
-            "#...#...#..",
-            ".#....#..#.",
-            "..#.#...#.#",
-            ".#...##..#.",
-            "..#.##.....",
-            ".#.#.#....#",
-            ".#........#",
-            "#.##...#...",
-            "#...##....#",
-            ".#..#...#.#"
-        ]);
+        let input = read_contents_of_file("input/3-example");
         let expected: Option<i32> = Some(336);
 
         let actual = calculate_part_two(
