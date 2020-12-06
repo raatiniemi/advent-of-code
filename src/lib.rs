@@ -4,8 +4,7 @@ use std::fs;
 pub fn read_contents_of_file(path: &str) -> Vec<String> {
     return fs::read_to_string(path)
         .expect(&format!("Unable to read file at path {}", path).as_str())
-        .split("\n")
-        .filter(|v| { !v.is_empty() })
+        .split_terminator("\n")
         .map(|v| { v.to_string() })
         .collect();
 }
