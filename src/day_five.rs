@@ -36,7 +36,7 @@ fn calculate_part_two(input: Vec<String>) -> Option<usize> {
             seat_ids.iter()
                 .enumerate()
                 .find(|(index, seat_id)| { (index + min) != **seat_id })
-                .map(|(index, &seat_id)| { seat_id - 1 })
+                .map(|(_, &seat_id)| { seat_id - 1 })
         }
         _ => None,
     };
