@@ -21,7 +21,7 @@ impl Add for Point {
     }
 }
 
-fn calculate_part_one(input: Vec<String>) -> Option<i32> {
+fn calculate_part_one(input: Vec<String>) -> u32 {
     let slopes: Vec<Point> = Vec::from([
         Point { x: 3, y: 1 }
     ]);
@@ -29,7 +29,7 @@ fn calculate_part_one(input: Vec<String>) -> Option<i32> {
     return calculate_answer(&input, slopes);
 }
 
-fn calculate_part_two(input: Vec<String>) -> Option<i32> {
+fn calculate_part_two(input: Vec<String>) -> u32 {
     let walks: Vec<Point> = Vec::from([
         Point { x: 1, y: 1 },
         Point { x: 3, y: 1 },
@@ -41,20 +41,17 @@ fn calculate_part_two(input: Vec<String>) -> Option<i32> {
     return calculate_answer(&input, walks);
 }
 
-fn calculate_answer(input: &Vec<String>, walks: Vec<Point>) -> Option<i32> {
-    return walks.iter()
-        .map(|walk| { calculate_number_of_trees(input, *walk) })
-        .fold(Some(1), |product, number_of_trees| {
-            return match (product, number_of_trees) {
-                (Some(lhs), Some(rhs)) => Some(lhs * rhs),
-                _ => product
-            };
-        });
+fn calculate_answer(input: &Vec<String>, walks: Vec<Point>) -> u32 {
+    let mut result: u32 = 1;
+    for walk in walks {
+        result *= calculate_number_of_trees(input, walk)
+    }
+    return result;
 }
 
-fn calculate_number_of_trees(input: &Vec<String>, walk: Point) -> Option<i32> {
+fn calculate_number_of_trees(input: &Vec<String>, walk: Point) -> u32 {
     if input.len() == 0 {
-        return None;
+        return 1;
     }
 
     let first = input.first()
@@ -71,7 +68,7 @@ fn calculate_number_of_trees(input: &Vec<String>, walk: Point) -> Option<i32> {
 
         position = position + walk;
     }
-    Some(trees)
+    trees
 }
 
 #[cfg(test)]
@@ -83,7 +80,7 @@ mod test {
     #[test]
     fn day_three_part_one_with_example() {
         let input = read_contents_of_file("input/3-example");
-        let expected: Option<i32> = Some(7);
+        let expected: u32 = 7;
 
         let actual = calculate_part_one(
             input.iter()
@@ -91,14 +88,14 @@ mod test {
                 .collect()
         );
 
-        println!("Day #3 (part one) with example: {}", actual.unwrap());
+        println!("Day #3 (part one) with example: {}", actual);
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn day_three_part_one_with_input() {
         let input = read_contents_of_file("input/3");
-        let expected: Option<i32> = Some(234);
+        let expected: u32 = 234;
 
         let actual = calculate_part_one(
             input.iter()
@@ -106,14 +103,14 @@ mod test {
                 .collect()
         );
 
-        println!("Day #3 (part one) with input: {}", actual.unwrap());
+        println!("Day #3 (part one) with input: {}", actual);
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn day_three_part_two_with_example() {
         let input = read_contents_of_file("input/3-example");
-        let expected: Option<i32> = Some(336);
+        let expected: u32 = 336;
 
         let actual = calculate_part_two(
             input.iter()
@@ -121,7 +118,7 @@ mod test {
                 .collect()
         );
 
-        println!("Day #3 (part two) with example: {}", actual.unwrap());
+        println!("Day #3 (part two) with example: {}", actual);
         assert_eq!(expected, actual);
     }
 }
