@@ -57,8 +57,8 @@ fn build_passport(passport: &HashMap<&str, &str>) -> Passport {
     }
 }
 
-fn calculate_part_one(input: Vec<String>) -> Option<usize> {
-    let count = read_passports(&input).iter()
+fn calculate_part_one(input: Vec<String>) -> usize {
+    read_passports(&input).iter()
         .filter(|v| {
             v.birth_year.is_some()
                 && v.issue_year.is_some()
@@ -68,9 +68,7 @@ fn calculate_part_one(input: Vec<String>) -> Option<usize> {
                 && v.eye_color.is_some()
                 && v.passport_id.is_some()
         })
-        .count();
-
-    return Some(count);
+        .count()
 }
 
 fn read_passports(input: &Vec<String>) -> Vec<Passport> {
@@ -114,22 +112,22 @@ mod tests {
     #[test]
     fn day_four_part_one_with_example() {
         let input = read_contents_of_file("input/4-example");
-        let expected: Option<usize> = Some(2);
+        let expected: usize = 2;
 
         let actual = calculate_part_one(input);
 
-        println!("Day #4 (part one) with example: {}", actual.unwrap());
+        println!("Day #4 (part one) with example: {}", actual);
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn day_four_part_one_with_input() {
         let input = read_contents_of_file("input/4");
-        let expected: Option<usize> = Some(245);
+        let expected: usize = 245;
 
         let actual = calculate_part_one(input);
 
-        println!("Day #4 (part one) with input: {}", actual.unwrap());
+        println!("Day #4 (part one) with input: {}", actual);
         assert_eq!(expected, actual);
     }
 }
