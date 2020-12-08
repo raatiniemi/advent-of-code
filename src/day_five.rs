@@ -1,5 +1,3 @@
-use advent_of_code::group_by;
-
 use crate::day_five::Partition::{Higher, Lower};
 
 struct Seat {
