@@ -22,6 +22,26 @@ fn calculate_part_one(input: Vec<String>) -> Option<usize> {
         .max();
 }
 
+fn calculate_part_two(input: Vec<String>) -> Option<usize> {
+    let mut seat_ids: Vec<usize> = input.iter()
+        .filter_map(|v| calculate_seat(v))
+        .map(|v| calculate_seat_id(&v))
+        .collect::<Vec<usize>>();
+
+    seat_ids.sort();
+
+    let first = seat_ids.first();
+    return match first {
+        Some(min) => {
+            seat_ids.iter()
+                .enumerate()
+                .find(|(index, seat_id)| { (index + min) != **seat_id })
+                .map(|(index, &seat_id)| { seat_id - 1 })
+        }
+        _ => None,
+    };
+}
+
 fn calculate_seat(value: &String) -> Option<Seat> {
     if value.len() != 10 {
         return None;
@@ -107,6 +127,17 @@ mod tests {
         let actual = calculate_part_one(input);
 
         println!("Day #5 (part one) with example: {}", actual.unwrap());
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn day_five_part_two_with_input() {
+        let input = read_contents_of_file("input/5");
+        let expected: Option<usize> = Some(524);
+
+        let actual = calculate_part_two(input);
+
+        println!("Day #5 (part two) with example: {}", actual.unwrap());
         assert_eq!(expected, actual);
     }
 }
