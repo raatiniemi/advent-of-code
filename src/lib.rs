@@ -24,6 +24,21 @@ pub fn map_to_i32(vec: Vec<String>) -> Vec<i32> {
         .collect();
 }
 
+/// Map a [Vec] of [String] to a [Vec] of [i64].
+pub fn map_to_i64(vec: Vec<String>) -> Vec<i64> {
+    return vec.iter()
+        .filter_map(|v| {
+            let result = v.parse::<i64>();
+            if result.is_err() {
+                eprintln!("Unable to parse i64 from: {}", v);
+                None
+            } else {
+                result.ok()
+            }
+        })
+        .collect();
+}
+
 /// Read character at index from String.
 ///
 /// With a valid index, the character (as [String]) at the index will be returned as [Option.Some].
