@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 use crate::day_eight::Operation::{NOP, ACC, JMP};
 
+#[derive(Copy, Clone)]
 enum Operation {
     NOP,
     ACC,
@@ -22,37 +23,29 @@ fn parse_operation(segments: &Vec<&str>) -> Operation {
     }
 }
 
+#[derive(Copy, Clone)]
 struct Instruction {
     operation: Operation,
     argument: i32,
 }
 
 fn calculate_part_one(input: Vec<String>) -> i32 {
-    let mut executed_indexes: HashSet<usize> = HashSet::new();
-    let mut current_index: usize = 0;
-    let mut accumulator = 0;
-    loop {
-        if executed_indexes.contains(&current_index) {
-            break;
-        }
-        executed_indexes.insert(current_index);
+    return filter_unique_instructions(&parse_instructions(input))
+        .iter()
+        .fold(0, calculate_accumulator);
+}
 
-        let instruction = parse_instruction(input.get(current_index));
-        match instruction.operation {
-            ACC => {
-                accumulator += instruction.argument;
-                current_index += 1;
-            }
-            JMP => {
-                current_index = ((current_index as i32) + instruction.argument) as usize
-            }
-            NOP => {
-                current_index += 1;
-            }
-        }
-    }
+fn calculate_accumulator(accumulator: i32, instruction: &Instruction) -> i32 {
+    return match instruction.operation {
+        ACC => accumulator + instruction.argument,
+        _ => accumulator,
+    };
+}
 
-    return accumulator;
+fn parse_instructions(input: Vec<String>) -> Vec<Instruction> {
+    input.iter()
+        .map(|v| parse_instruction(Some(v)))
+        .collect()
 }
 
 fn parse_instruction(value: Option<&String>) -> Instruction {
@@ -61,11 +54,48 @@ fn parse_instruction(value: Option<&String>) -> Instruction {
 
     Instruction {
         operation: parse_operation(&segments),
-        argument: segments.last().unwrap_or(&"+0")
-            .to_owned()
-            .parse::<i32>()
-            .unwrap_or(0),
+        argument: parse_argument(segments),
     }
+}
+
+fn parse_argument(segments: Vec<&str>) -> i32 {
+    segments.last().unwrap_or(&"+0")
+        .to_owned()
+        .parse::<i32>()
+        .unwrap_or(0)
+}
+
+fn filter_unique_instructions(instructions: &Vec<Instruction>) -> Vec<Instruction> {
+    let mut unique_instructions: Vec<Instruction> = Vec::new();
+
+    let mut executed_indexes: HashSet<usize> = HashSet::new();
+    let mut current_index: usize = 0;
+    loop {
+        if executed_indexes.contains(&current_index) {
+            break;
+        }
+        executed_indexes.insert(current_index);
+
+        let instruction = read_instruction_at_index(instructions, current_index);
+        current_index = calculate_next_index(current_index, instruction);
+        unique_instructions.push(instruction.to_owned());
+    }
+
+    return unique_instructions;
+}
+
+fn read_instruction_at_index(instructions: &Vec<Instruction>, current_index: usize) -> Instruction {
+    instructions.get(current_index)
+        .unwrap_or(&Instruction { operation: NOP, argument: 0 })
+        .to_owned()
+}
+
+fn calculate_next_index(current_index: usize, instruction: Instruction) -> usize {
+    return match instruction.operation {
+        ACC => current_index + 1,
+        JMP => ((current_index as i32) + instruction.argument) as usize,
+        NOP => current_index + 1,
+    };
 }
 
 #[cfg(test)]
