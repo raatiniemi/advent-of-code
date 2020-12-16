@@ -35,6 +35,12 @@ fn calculate_part_one(input: Vec<String>) -> i32 {
         .fold(0, calculate_accumulator);
 }
 
+fn calculate_part_two(input: Vec<String>) -> i32 {
+    return calculate_correct_instructions_set(parse_instructions(input))
+        .iter()
+        .fold(0, calculate_accumulator);
+}
+
 fn calculate_accumulator(accumulator: i32, instruction: &Instruction) -> i32 {
     return match instruction.operation {
         ACC => accumulator + instruction.argument,
@@ -84,6 +90,40 @@ fn filter_unique_instructions(instructions: &Vec<Instruction>) -> Vec<Instructio
     return unique_instructions;
 }
 
+fn calculate_correct_instructions_set(instructions: Vec<Instruction>) -> Vec<Instruction> {
+    let mut unique_instructions: Vec<Instruction> = Vec::new();
+
+    let mut executed_indexes: Vec<usize> = Vec::new();
+    let mut current_index: usize = 0;
+    let number_of_instructions = instructions.len();
+    loop {
+        if current_index >= number_of_instructions {
+            break;
+        }
+
+        let mut instruction = read_instruction_at_index(&instructions, current_index);
+        if current_index == (number_of_instructions - 2) {
+            instruction = match instruction.operation {
+                JMP => Instruction {
+                    operation: NOP,
+                    argument: instruction.argument,
+                },
+                NOP => Instruction {
+                    operation: JMP,
+                    argument: instruction.argument,
+                },
+                _ => instruction
+            }
+        }
+        executed_indexes.push(current_index);
+
+        current_index = calculate_next_index(current_index, instruction);
+        unique_instructions.push(instruction.to_owned());
+    }
+
+    return unique_instructions;
+}
+
 fn read_instruction_at_index(instructions: &Vec<Instruction>, current_index: usize) -> Instruction {
     instructions.get(current_index)
         .unwrap_or(&Instruction { operation: NOP, argument: 0 })
@@ -123,6 +163,17 @@ mod tests {
         let actual = calculate_part_one(input);
 
         println!("Day #8 (part one) with input: {}", actual);
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn day_eight_part_two_with_example() {
+        let input = read_contents_of_file("input/8-example.txt");
+        let expected: i32 = 8;
+
+        let actual = calculate_part_two(input);
+
+        println!("Day #8 (part two) with example: {}", actual);
         assert_eq!(expected, actual);
     }
 }
