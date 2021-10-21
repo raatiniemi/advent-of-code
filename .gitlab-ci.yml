@@ -1,11 +1,20 @@
 stages:
+  - lint
   - build
   - test
 
 include:
   - project: 'rahome/gitlab-ci-templates'
     ref: main
-    file: '/templates/Rust.gitlab-ci.yml'
+    file:
+      - '/templates/Rust.gitlab-ci.yml'
+      - '/templates/Yaml.gitlab-ci.yml'
+
+lint:yaml:
+  stage: lint
+  extends:
+    - .yaml-lint
+  needs: []
 
 build:
   stage: build
