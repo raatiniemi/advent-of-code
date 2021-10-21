@@ -101,7 +101,7 @@ fn match_exclusive(character_at_first_index: &String, character_at_second_index:
 
 #[cfg(test)]
 mod test {
-    use advent_of_code::read_contents_of_file;
+    use twentytwenty::read_contents_of_file;
 
     use super::*;
 

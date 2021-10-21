@@ -44,7 +44,7 @@ pub fn map_to_i64(vec: Vec<String>) -> Vec<i64> {
 /// With a valid index, the character (as [String]) at the index will be returned as [Option.Some].
 ///
 /// ```rust
-/// # use advent_of_code::character_at_index;
+/// # use twentytwenty::character_at_index;
 /// let value = String::from("abc");
 /// let character = character_at_index(1, &value);
 ///
@@ -55,7 +55,7 @@ pub fn map_to_i64(vec: Vec<String>) -> Vec<i64> {
 /// With an invalid index, [Option.None] will be returned.
 ///
 /// ```rust
-/// # use advent_of_code::character_at_index;
+/// # use twentytwenty::character_at_index;
 /// let value = String::from("abc");
 /// let character = character_at_index(7, &value);
 ///

@@ -14,7 +14,7 @@ fn count_unique_characters(v: String) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use advent_of_code::read_contents_of_file;
+    use twentytwenty::read_contents_of_file;
 
     use super::*;
 

@@ -73,7 +73,7 @@ fn calculate_number_of_trees(input: &Vec<String>, walk: Point) -> u32 {
 
 #[cfg(test)]
 mod test {
-    use advent_of_code::read_contents_of_file;
+    use twentytwenty::read_contents_of_file;
 
     use super::*;
 
