@@ -69,5 +69,5 @@ pub fn character_at_index(index: i32, s: &String) -> Option<String> {
 
     return s.chars()
         .nth(index)
-        .map(|v| { String::from(v) });
+        .map(|v| { v.to_string() });
 }
