@@ -3,5 +3,12 @@
 version = 3
 
 [[package]]
+name = "adventofcode"
+version = "0.0.1"
+
+[[package]]
 name = "twentytwenty"
 version = "0.0.1"
+dependencies = [
+ "adventofcode",
+]

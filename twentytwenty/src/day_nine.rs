@@ -1,4 +1,4 @@
-use twentytwenty::map_to_i64;
+use adventofcode::map_to_i64;
 
 fn calculate_part_one(input: Vec<String>, preamble_count: usize) -> i64 {
     return find_invalid_number(preamble_count, &map_to_i64(input));
@@ -89,7 +89,7 @@ fn calculate_contiguous_set_to_invalid_number(
 
 #[cfg(test)]
 mod tests {
-    use twentytwenty::read_contents_of_file;
+    use adventofcode::read_contents_of_file;
 
     use super::*;
 

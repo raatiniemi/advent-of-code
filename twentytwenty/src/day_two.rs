@@ -1,4 +1,4 @@
-use crate::lib::character_at_index;
+use adventofcode::character_at_index;
 
 #[derive(Eq, PartialEq, Clone)]
 struct PolicyWithPassword {
@@ -101,7 +101,7 @@ fn match_exclusive(character_at_first_index: &String, character_at_second_index:
 
 #[cfg(test)]
 mod test {
-    use twentytwenty::read_contents_of_file;
+    use adventofcode::read_contents_of_file;
 
     use super::*;
 

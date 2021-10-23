@@ -140,7 +140,7 @@ fn calculate_next_index(current_index: usize, instruction: Instruction) -> usize
 
 #[cfg(test)]
 mod tests {
-    use twentytwenty::read_contents_of_file;
+    use adventofcode::read_contents_of_file;
 
     use super::*;
 

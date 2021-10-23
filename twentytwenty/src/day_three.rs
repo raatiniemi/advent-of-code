@@ -1,6 +1,6 @@
 use std::ops::Add;
 
-use crate::lib::character_at_index;
+use adventofcode::character_at_index;
 
 const CHARACTER_FOR_TREE: &str = "#";
 
@@ -73,7 +73,7 @@ fn calculate_number_of_trees(input: &Vec<String>, walk: Point) -> u32 {
 
 #[cfg(test)]
 mod test {
-    use twentytwenty::read_contents_of_file;
+    use adventofcode::read_contents_of_file;
 
     use super::*;
 

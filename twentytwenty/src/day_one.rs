@@ -28,7 +28,7 @@ fn calculate_part_two(input: Vec<i32>) -> Option<i32> {
 
 #[cfg(test)]
 mod tests {
-    use twentytwenty::{read_contents_of_file, map_to_i32};
+    use adventofcode::{map_to_i32, read_contents_of_file};
 
     use super::*;
 

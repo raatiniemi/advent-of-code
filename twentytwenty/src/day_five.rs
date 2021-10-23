@@ -104,7 +104,7 @@ fn calculate_seat_id(seat: &Seat) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use twentytwenty::read_contents_of_file;
+    use adventofcode::read_contents_of_file;
 
     use super::*;
 

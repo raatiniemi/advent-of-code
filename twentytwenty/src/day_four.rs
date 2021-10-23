@@ -164,7 +164,7 @@ fn read_passports(input: &Vec<String>) -> Vec<Passport> {
 
 #[cfg(test)]
 mod tests {
-    use twentytwenty::read_contents_of_file;
+    use adventofcode::read_contents_of_file;
 
     use super::*;
 
