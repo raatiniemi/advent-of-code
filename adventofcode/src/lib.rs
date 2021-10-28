@@ -1,4 +1,35 @@
+use std::fmt::{Display, Formatter};
 use std::fs;
+
+/// Represents which source type to use for the puzzle.
+pub enum Source {
+    Example,
+    Input,
+}
+
+impl Display for Source {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Source::Example => write!(f, "example"),
+            Source::Input => write!(f, "input"),
+        }
+    }
+}
+
+/// Represents which part of the puzzle on a given day to perform.
+pub enum Part {
+    One,
+    Two,
+}
+
+impl Display for Part {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Part::One => write!(f, "one"),
+            Part::Two => write!(f, "two"),
+        }
+    }
+}
 
 /// Read the contents of a file on a given path.
 pub fn read_contents_of_file(path: &str) -> Vec<String> {
