@@ -1,3 +1,5 @@
+use adventofcode::{Part, Source};
+
 mod day_one;
 mod day_two;
 mod day_three;
@@ -8,5 +10,19 @@ mod day_eight;
 mod day_nine;
 
 fn main() {
-    println!("Hello world!")
+    let days: Vec<fn(&Source, &Part) -> String> = vec![
+        day_one::day_one
+    ];
+    let variations: Vec<(Source, Part)> = vec![
+        (Source::Example, Part::One),
+        (Source::Input, Part::One),
+        (Source::Example, Part::Two),
+        (Source::Input, Part::Two),
+    ];
+
+    for day in days {
+        for (source, part) in &variations {
+            println!("{}", day(source, part));
+        }
+    }
 }
