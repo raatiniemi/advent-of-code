@@ -11,7 +11,8 @@ mod day_nine;
 
 fn main() {
     let days: Vec<fn(&Source, &Part) -> String> = vec![
-        day_one::day_one
+        day_one::day_one,
+        day_two::day_two,
     ];
     let variations: Vec<(Source, Part)> = vec![
         (Source::Example, Part::One),
