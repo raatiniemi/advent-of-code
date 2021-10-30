@@ -1,6 +1,6 @@
 use std::ops::Add;
 
-use adventofcode::character_at_index;
+use adventofcode::{character_at_index, Part, read_contents_of_file, Source};
 
 const CHARACTER_FOR_TREE: &str = "#";
 
@@ -19,6 +19,31 @@ impl Add for Point {
             y: self.y + other.y,
         }
     }
+}
+
+pub fn day_three(source: &Source, part: &Part) -> String {
+    match source {
+        Source::Input => {
+            match part {
+                Part::Two => {
+                    return format!("Day #3 (part {}) with {}: Is not working", part, source);
+                }
+                _ => ()
+            }
+        }
+        _ => ()
+    }
+
+    let path = match source {
+        Source::Example => "input/3-example",
+        Source::Input => "input/3",
+    };
+    let input = read_contents_of_file(path);
+    let value = match part {
+        Part::One => calculate_part_one(input),
+        Part::Two => calculate_part_two(input),
+    };
+    return format!("Day #3 (part {}) with {}: {}", part, source, value);
 }
 
 fn calculate_part_one(input: Vec<String>) -> u32 {
@@ -88,7 +113,6 @@ mod test {
                 .collect()
         );
 
-        println!("Day #3 (part one) with example: {}", actual);
         assert_eq!(expected, actual);
     }
 
@@ -103,7 +127,6 @@ mod test {
                 .collect()
         );
 
-        println!("Day #3 (part one) with input: {}", actual);
         assert_eq!(expected, actual);
     }
 
@@ -118,7 +141,6 @@ mod test {
                 .collect()
         );
 
-        println!("Day #3 (part two) with example: {}", actual);
         assert_eq!(expected, actual);
     }
 }
