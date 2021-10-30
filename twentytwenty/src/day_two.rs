@@ -1,10 +1,23 @@
-use adventofcode::character_at_index;
+use adventofcode::{character_at_index, Part, read_contents_of_file, Source};
 
-#[derive(Eq, PartialEq, Clone)]
-struct PolicyWithPassword {
-    indexes: (i32, i32),
-    character: String,
-    password: String,
+#[derive(Eq, PartialEq, Clone, Debug)]
+pub struct PolicyWithPassword {
+    pub indexes: (i32, i32),
+    pub character: String,
+    pub password: String,
+}
+
+pub fn day_two(source: &Source, part: &Part) -> String {
+    let path = match source {
+        Source::Example => "input/2-example",
+        Source::Input => "input/2",
+    };
+    let input = read_contents_of_file(path);
+    let value = match part {
+        Part::One => calculate_answer(input, &is_password_valid_for_part_one),
+        Part::Two => calculate_answer(input, &is_password_valid_for_part_two),
+    };
+    return format!("Day #2 (part {}) with {}: {}", part, source, value.unwrap());
 }
 
 fn calculate_answer(input: Vec<String>, is_password_valid: &dyn Fn(PolicyWithPassword) -> bool) -> Option<i32> {
@@ -19,6 +32,7 @@ fn calculate_answer(input: Vec<String>, is_password_valid: &dyn Fn(PolicyWithPas
 /// Parse the raw value into the `PolicyWithPassword`.
 ///
 /// ```rust
+/// use twentytwenty::day_two::{parse_raw_to_policy_with_password, PolicyWithPassword};
 /// let expected = PolicyWithPassword {
 ///     indexes: (1, 3),
 ///     character: String::from("a"),
@@ -27,7 +41,7 @@ fn calculate_answer(input: Vec<String>, is_password_valid: &dyn Fn(PolicyWithPas
 /// let actual = parse_raw_to_policy_with_password(String::from("1-3 a: abcde"));
 /// assert_eq!(actual, expected);
 /// ```
-fn parse_raw_to_policy_with_password(raw: String) -> PolicyWithPassword {
+pub fn parse_raw_to_policy_with_password(raw: String) -> PolicyWithPassword {
     let segments: Vec<String> = split_raw_into_segments(raw);
     if segments.len() != 3 {
         panic!("Expected raw value in form of three segments, found {}", segments.len())
@@ -112,7 +126,6 @@ mod test {
 
         let actual = calculate_answer(input, &is_password_valid_for_part_one);
 
-        println!("Day #2 (part one) with example: {}", actual.unwrap());
         assert_eq!(expected, actual);
     }
 
@@ -123,7 +136,6 @@ mod test {
 
         let actual = calculate_answer(input, &is_password_valid_for_part_one);
 
-        println!("Day #2 (part one) with input: {}", actual.unwrap());
         assert_eq!(expected, actual);
     }
 
@@ -134,7 +146,6 @@ mod test {
 
         let actual = calculate_answer(input, &is_password_valid_for_part_two);
 
-        println!("Day #2 (part two) with example: {}", actual.unwrap());
         assert_eq!(expected, actual);
     }
 
@@ -145,7 +156,6 @@ mod test {
 
         let actual = calculate_answer(input, &is_password_valid_for_part_two);
 
-        println!("Day #2 (part two) with input: {}", actual.unwrap());
         assert_eq!(expected, actual);
     }
 }
