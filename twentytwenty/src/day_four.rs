@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use adventofcode::{Part, read_contents_of_file, Source};
+
 #[derive(Debug)]
 struct Passport {
     birth_year: Option<i32>,
@@ -10,6 +12,36 @@ struct Passport {
     eye_color: Option<String>,
     passport_id: Option<String>,
     county_id: Option<i32>,
+}
+
+pub fn day_four(source: &Source, part: &Part) -> String {
+    let value = match (source, part) {
+        (Source::Example, Part::One) => {
+            calculate_answer(
+                read_contents_of_file("input/4-example"),
+                basic_validation,
+            )
+        }
+        (Source::Example, Part::Two) => {
+            calculate_answer(
+                read_contents_of_file("input/4-example-part-two.txt"),
+                strict_validation,
+            )
+        }
+        (Source::Input, Part::One) => {
+            calculate_answer(
+                read_contents_of_file("input/4"),
+                basic_validation,
+            )
+        }
+        (Source::Input, Part::Two) => {
+            calculate_answer(
+                read_contents_of_file("input/4"),
+                strict_validation,
+            )
+        }
+    };
+    return format!("Day #4 (part {}) with {}: {}", part, source, value);
 }
 
 fn build_passport(passport: &HashMap<&str, &str>) -> Passport {
@@ -175,7 +207,6 @@ mod tests {
 
         let actual = calculate_answer(input, basic_validation);
 
-        println!("Day #4 (part one) with example: {}", actual);
         assert_eq!(expected, actual);
     }
 
@@ -186,7 +217,6 @@ mod tests {
 
         let actual = calculate_answer(input, basic_validation);
 
-        println!("Day #4 (part one) with input: {}", actual);
         assert_eq!(expected, actual);
     }
 
@@ -197,7 +227,6 @@ mod tests {
 
         let actual = calculate_answer(input, strict_validation);
 
-        println!("Day #4 (part two) with input: {}", actual);
         assert_eq!(expected, actual);
     }
 
@@ -208,7 +237,6 @@ mod tests {
 
         let actual = calculate_answer(input, strict_validation);
 
-        println!("Day #4 (part two) with input: {}", actual);
         assert_eq!(expected, actual);
     }
 }
