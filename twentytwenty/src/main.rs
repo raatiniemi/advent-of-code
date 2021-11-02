@@ -14,6 +14,7 @@ fn main() {
         day_one::day_one,
         day_two::day_two,
         day_three::day_three,
+        day_four::day_four
     ];
     let variations: Vec<(Source, Part)> = vec![
         (Source::Example, Part::One),
