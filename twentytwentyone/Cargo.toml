@@ -1,0 +1,10 @@
+[package]
+name = "twentytwentyone"
+version = "0.0.1"
+authors = ["Tobias Raatiniemi <raatiniemi@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+adventofcode = { path = "../adventofcode" }

@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/adventofcode/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/twentytwenty/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/twentytwenty/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/twentytwentyone/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/twentytwenty/target" />
     </content>

@@ -1,3 +1,7 @@
 [workspace]
 
-members = ["adventofcode", "twentytwenty"]
+members = [
+    "adventofcode",
+    "twentytwenty",
+    "twentytwentyone"
+]

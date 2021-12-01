@@ -12,3 +12,10 @@ version = "0.0.1"
 dependencies = [
  "adventofcode",
 ]
+
+[[package]]
+name = "twentytwentyone"
+version = "0.0.1"
+dependencies = [
+ "adventofcode",
+]
