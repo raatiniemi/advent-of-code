@@ -1,20 +1,18 @@
 fn calculate_part_one(input: Vec<i32>) -> Option<i32> {
-    let mut result = 0;
-    for (index, value) in input.iter().enumerate() {
-        if index == 0 {
-            continue
-        }
+    Some(calculate_increments(input))
+}
 
-        match input.get(index - 1) {
-            Some(previous_value) => {
-                if previous_value < value {
-                    result += 1;
-                }
+fn calculate_increments(input: Vec<i32>) -> i32 {
+    input.windows(2)
+        .map(|v| (v.first(), v.last()))
+        .map(|(lhs, rhs)| (lhs.unwrap_or(&0), rhs.unwrap_or(&0)))
+        .fold(0, |acc, (lhs, rhs)| {
+            if lhs < rhs {
+                acc + 1
+            } else {
+                acc
             }
-            _ => ()
-        }
-    }
-    Some(result)
+        })
 }
 
 #[cfg(test)]
