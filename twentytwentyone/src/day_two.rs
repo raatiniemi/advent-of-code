@@ -1,32 +1,44 @@
 use Command::{Down, Forward, Up};
 
 enum Command {
-    Forward { x: i32 },
-    Down { x: i32 },
-    Up { x: i32 },
+    Forward { value: i32 },
+    Down { value: i32 },
+    Up { value: i32 },
 }
 
+struct Position {
+    x: i32,
+    y: i32,
+}
+
+const EMPTY_POSITION: Position = Position {
+    x: 0,
+    y: 0,
+};
+
 fn calculate_part_one(input: Vec<String>) -> Option<i32> {
-    let calculate_position_adjustment = |current_position: (i32, i32), command: Command| -> (i32, i32) {
+    let calculate_position_adjustment = |current: Position, command: Command| -> Position {
         let adjustment = match command {
-            Forward { x } => (x, 0),
-            Down { x } => (0, x),
-            Up { x } => (0, -x),
+            Forward { value } => Position { x: value, y: 0 },
+            Down { value } => Position { x: 0, y: value },
+            Up { value } => Position { x: 0, y: -value },
         };
 
-        (current_position.0 + adjustment.0, current_position.1 + adjustment.1)
+        Position {
+            x: current.x + adjustment.x,
+            y: current.y + adjustment.y,
+        }
     };
-    let initial_position = (0, 0);
-    let (x, y) = input.iter()
+    let position = input.iter()
         .map(parse_command)
-        .fold(initial_position, |current_position, value| {
+        .fold(EMPTY_POSITION, |current, value| {
             match value {
-                Some(command) => calculate_position_adjustment(current_position, command),
-                None => current_position,
+                Some(command) => calculate_position_adjustment(current, command),
+                None => current,
             }
         });
 
-    Some(x * y)
+    Some(position.x * position.y)
 }
 
 fn parse_command(v: &String) -> Option<Command> {
@@ -41,11 +53,41 @@ fn parse_command(v: &String) -> Option<Command> {
 
 fn parse_raw_command(name: &str, value: i32) -> Option<Command> {
     match name {
-        "forward" => Some(Forward { x: value }),
-        "down" => Some(Down { x: value }),
-        "up" => Some(Up { x: value }),
+        "forward" => Some(Forward { value: value }),
+        "down" => Some(Down { value: value }),
+        "up" => Some(Up { value: value }),
         _ => None
     }
+}
+
+fn calculate_part_two(input: Vec<String>) -> Option<i32> {
+    let calculate_position_adjustment = |current: (Position, i32), command: Command| -> (Position, i32) {
+        let (position, aim) = current;
+        match command {
+            Forward { value } => {
+                let x = position.x + value;
+                let y = position.y + aim * value;
+
+                (Position { x, y }, aim)
+            }
+            Down { value: x } => {
+                (position, aim + x)
+            }
+            Up { value: x } => {
+                (position, aim - x)
+            }
+        }
+    };
+    let (position, _) = input.iter()
+        .map(parse_command)
+        .fold((EMPTY_POSITION, 0), |current, value| {
+            match value {
+                Some(command) => calculate_position_adjustment(current, command),
+                None => current,
+            }
+        });
+
+    Some(position.x * position.y)
 }
 
 #[cfg(test)]
@@ -80,6 +122,36 @@ mod tests {
         let expected: Option<i32> = Some(1580000);
 
         let actual = calculate_part_one(input);
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn day_two_part_two_with_empty_input() {
+        let input: Vec<String> = vec![];
+        let expected: Option<i32> = Some(0);
+
+        let actual = calculate_part_two(input);
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn day_two_part_two_with_example() {
+        let input = read_contents_of_file("input/2-example");
+        let expected: Option<i32> = Some(900);
+
+        let actual = calculate_part_two(input);
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn day_two_part_two_with_input() {
+        let input = read_contents_of_file("input/2");
+        let expected: Option<i32> = Some(1251263225);
+
+        let actual = calculate_part_two(input);
 
         assert_eq!(expected, actual);
     }
