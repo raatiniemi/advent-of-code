@@ -14,14 +14,14 @@ fn calculate_part_one(input: Vec<String>) -> Option<i32> {
                 .sum()
         })
         .collect();
-    let gamma_rate = binary_to_decimal(calculate_binary_gamma_rate(number_of_rows, &values));
-    let epsilon_rate = binary_to_decimal(calculate_binary_epsilon_rate(number_of_rows, &values));
+    let gamma_rate = calculate_gamma_rate(number_of_rows, &values);
+    let epsilon_rate = calculate_epsilon_rate(number_of_rows, &values);
 
     Some(gamma_rate * epsilon_rate)
 }
 
-fn calculate_binary_gamma_rate(number_of_rows: i32, values: &Vec<i32>) -> String {
-    values.iter()
+fn calculate_gamma_rate(number_of_rows: i32, values: &Vec<i32>) -> i32 {
+    let binary_gamma_rate = values.iter()
         .map(|v| {
             if is_most_significant_bit(number_of_rows, v) {
                 "1"
@@ -30,11 +30,13 @@ fn calculate_binary_gamma_rate(number_of_rows: i32, values: &Vec<i32>) -> String
             }
         })
         .collect::<Vec::<&str>>()
-        .join("")
+        .join("");
+
+    binary_to_decimal(binary_gamma_rate)
 }
 
-fn calculate_binary_epsilon_rate(number_of_rows: i32, values: &Vec<i32>) -> String {
-    values.iter()
+fn calculate_epsilon_rate(number_of_rows: i32, values: &Vec<i32>) -> i32 {
+    let binary_epsilon_rate = values.iter()
         .map(|v| {
             if is_most_significant_bit(number_of_rows, v) {
                 "0"
@@ -43,7 +45,9 @@ fn calculate_binary_epsilon_rate(number_of_rows: i32, values: &Vec<i32>) -> Stri
             }
         })
         .collect::<Vec::<&str>>()
-        .join("")
+        .join("");
+
+    binary_to_decimal(binary_epsilon_rate)
 }
 
 fn is_most_significant_bit(number_of_rows: i32, value: &i32) -> bool {
