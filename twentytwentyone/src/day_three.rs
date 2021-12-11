@@ -1,19 +1,24 @@
 use adventofcode::character_at_index;
 
 fn calculate_part_one(input: Vec<String>) -> Option<i32> {
-    let number_of_rows = input.len() as i32;
-    let number_of_columns = input.first().unwrap_or(&"".to_string()).len() as i32;
-
+    let number_of_columns = calculate_number_of_columns(&input);
     let binary_table = pivot_binary_table(input, number_of_columns);
     let values = binary_table
         .iter()
         .map(|v| v.iter().sum())
         .collect();
 
+    let number_of_rows = calculate_number_of_rows(&input);
     let gamma_rate = calculate_gamma_rate(number_of_rows, &values);
     let epsilon_rate = calculate_epsilon_rate(number_of_rows, &values);
 
     Some(gamma_rate * epsilon_rate)
+}
+
+fn calculate_number_of_columns(input: &Vec<String>) -> i32 {
+    input.first()
+        .unwrap_or(&"".to_string())
+        .len() as i32
 }
 
 fn pivot_binary_table(input: Vec<String>, number_of_columns: i32) -> Vec<Vec<i32>> {
@@ -27,6 +32,10 @@ fn pivot_binary_table(input: Vec<String>, number_of_columns: i32) -> Vec<Vec<i32
                 .collect()
         })
         .collect()
+}
+
+fn calculate_number_of_rows(input: &Vec<String>) -> i32 {
+    input.len() as i32
 }
 
 fn calculate_gamma_rate(number_of_rows: i32, values: &Vec<i32>) -> i32 {
