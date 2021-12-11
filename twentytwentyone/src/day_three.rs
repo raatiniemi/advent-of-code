@@ -2,7 +2,7 @@ use adventofcode::character_at_index;
 
 fn calculate_part_one(input: Vec<String>) -> Option<i32> {
     let number_of_columns = calculate_number_of_columns(&input);
-    let binary_table = pivot_binary_table(input, number_of_columns);
+    let binary_table = pivot_binary_table(&input, number_of_columns);
     let values = binary_table
         .iter()
         .map(|v| v.iter().sum())
@@ -21,7 +21,7 @@ fn calculate_number_of_columns(input: &Vec<String>) -> i32 {
         .len() as i32
 }
 
-fn pivot_binary_table(input: Vec<String>, number_of_columns: i32) -> Vec<Vec<i32>> {
+fn pivot_binary_table(input: &Vec<String>, number_of_columns: i32) -> Vec<Vec<i32>> {
     (0..number_of_columns)
         .map(|column_index| {
             input.iter()
