@@ -4,20 +4,29 @@ fn calculate_part_one(input: Vec<String>) -> Option<i32> {
     let number_of_rows = input.len() as i32;
     let number_of_columns = input.first().unwrap_or(&"".to_string()).len() as i32;
 
-    let values: Vec<i32> = (0..number_of_columns)
+    let binary_table = pivot_binary_table(input, number_of_columns);
+    let values = binary_table
+        .iter()
+        .map(|v| v.iter().sum())
+        .collect();
+
+    let gamma_rate = calculate_gamma_rate(number_of_rows, &values);
+    let epsilon_rate = calculate_epsilon_rate(number_of_rows, &values);
+
+    Some(gamma_rate * epsilon_rate)
+}
+
+fn pivot_binary_table(input: Vec<String>, number_of_columns: i32) -> Vec<Vec<i32>> {
+    (0..number_of_columns)
         .map(|column_index| {
             input.iter()
                 .map(|row| {
                     let character = character_at_index(column_index, row);
                     ("1" == character.unwrap_or("0".to_string())) as i32
                 })
-                .sum()
+                .collect()
         })
-        .collect();
-    let gamma_rate = calculate_gamma_rate(number_of_rows, &values);
-    let epsilon_rate = calculate_epsilon_rate(number_of_rows, &values);
-
-    Some(gamma_rate * epsilon_rate)
+        .collect()
 }
 
 fn calculate_gamma_rate(number_of_rows: i32, values: &Vec<i32>) -> i32 {
