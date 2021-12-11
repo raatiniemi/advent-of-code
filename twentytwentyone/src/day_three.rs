@@ -2,13 +2,13 @@ use adventofcode::character_at_index;
 
 fn calculate_part_one(input: Vec<String>) -> Option<i32> {
     let number_of_rows = input.len() as i32;
-    let number_of_columns = input.first().unwrap_or(&"".to_string()).len();
+    let number_of_columns = input.first().unwrap_or(&"".to_string()).len() as i32;
 
     let values: Vec<i32> = (0..number_of_columns)
         .map(|column_index| {
             input.iter()
                 .map(|row| {
-                    let character = character_at_index(column_index as i32, row);
+                    let character = character_at_index(column_index, row);
                     ("1" == character.unwrap_or("0".to_string())) as i32
                 })
                 .sum()
