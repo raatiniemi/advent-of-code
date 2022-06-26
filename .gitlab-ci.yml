@@ -15,10 +15,6 @@ build:rust:
   extends:
     - .rust-build
   needs: []
-  artifacts:
-    paths:
-      - ./target
-    expire_in: 2 hours
 
 test:rust:
   extends:
