@@ -22,7 +22,7 @@ test:rust:
   needs: []
 
 test:python:
-  image: 3.10.5-slim-buster
+  image: python:3.10.5-slim-buster
   before_script:
     - python -m venv .venv
     - .venv/bin/python --version
