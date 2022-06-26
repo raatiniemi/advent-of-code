@@ -30,7 +30,7 @@ test:python:
     - .venv/bin/pip --version
     - .venv/bin/pip install -r requirements.txt
   script: |
-    .venv/bin/python -m unittest discover python/tests
+    .venv/bin/python -m unittest discover python/tests/twentyfifteen
   interruptible: true
   needs: []
   tags:
