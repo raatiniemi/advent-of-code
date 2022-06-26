@@ -1,9 +1,4 @@
 ---
-stages:
-  - lint
-  - build
-  - test
-
 include:
   - project: 'rahome/gitlab-ci-templates'
     ref: main
@@ -12,13 +7,11 @@ include:
       - '/templates/Yaml.gitlab-ci.yml'
 
 lint:yaml:
-  stage: lint
   extends:
     - .yaml-lint
   needs: []
 
-build:
-  stage: build
+build:rust:
   extends:
     - .rust-build
   needs: []
@@ -27,8 +20,7 @@ build:
       - ./target
     expire_in: 2 hours
 
-test:
-  stage: test
+test:rust:
   extends:
     - .rust-test
   needs: []
