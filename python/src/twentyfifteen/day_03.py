@@ -1,5 +1,5 @@
-from lib import Point
 from python.src import lib
+from python.src.lib import Point
 
 
 def move_using_arrow_direction(point: Point, direction: str) -> Point:
