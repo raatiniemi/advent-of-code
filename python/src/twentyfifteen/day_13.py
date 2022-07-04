@@ -10,7 +10,7 @@ def day_thirteen(part: int) -> int:
     return _day_thirteen_calculate_part_two(content)
 
 
-def _fdasdf2(data: str) -> ((str, str), int):
+def _extract_unit_for_neighbors(data: str) -> ((str, str), int):
     words = data.strip('.').split(' ')
     if words[2] == 'gain':
         points = int(f"{words[3]}")
@@ -20,13 +20,13 @@ def _fdasdf2(data: str) -> ((str, str), int):
     return (words[0], words[-1]), points
 
 
-def _fdasdf(data: [str]) -> {(str, str), int}:
-    return dict([_fdasdf2(x) for x in data])
+def _extract_units_for_neighbors(data: [str]) -> {(str, str), int}:
+    return dict([_extract_unit_for_neighbors(x) for x in data])
 
 
 def _day_thirteen_calculate_part_one(content: str) -> int:
-    fdasdf = _fdasdf(content.strip().splitlines())
-    participants = set([x for x, _ in fdasdf])
+    units_by_neighbors = _extract_units_for_neighbors(content.strip().splitlines())
+    participants = set([x for x, _ in units_by_neighbors])
 
     scores = []
     for permutation in permutations(participants):
@@ -34,8 +34,8 @@ def _day_thirteen_calculate_part_one(content: str) -> int:
         for i in range(0, len(permutation)):
             lhs = permutation[i]
             rhs = permutation[(i + 1) % len(permutation)]
-            scores_for_permutation.append(fdasdf.get((lhs, rhs)))
-            scores_for_permutation.append(fdasdf.get((rhs, lhs)))
+            scores_for_permutation.append(units_by_neighbors.get((lhs, rhs)))
+            scores_for_permutation.append(units_by_neighbors.get((rhs, lhs)))
 
         scores.append(sum(scores_for_permutation))
 
@@ -43,8 +43,8 @@ def _day_thirteen_calculate_part_one(content: str) -> int:
 
 
 def _day_thirteen_calculate_part_two(content: str) -> int:
-    fdasdf = _fdasdf(content.strip().splitlines())
-    participants = set([x for x, _ in fdasdf])
+    units_by_neighbors = _extract_units_for_neighbors(content.strip().splitlines())
+    participants = set([x for x, _ in units_by_neighbors])
     participants.add("me")
 
     scores = []
@@ -57,8 +57,8 @@ def _day_thirteen_calculate_part_two(content: str) -> int:
                 scores_for_permutation.append(0)
                 scores_for_permutation.append(0)
             else:
-                scores_for_permutation.append(fdasdf.get((lhs, rhs)))
-                scores_for_permutation.append(fdasdf.get((rhs, lhs)))
+                scores_for_permutation.append(units_by_neighbors.get((lhs, rhs)))
+                scores_for_permutation.append(units_by_neighbors.get((rhs, lhs)))
 
         scores.append(sum(scores_for_permutation))
 
