@@ -18,7 +18,7 @@ func day01Part02(input string) int {
 
 func calculateCaloriesByElf(input string) []int {
 	var totalCaloriesByElf []int
-	groups := strings.Split(input, "\n\n")
+	groups := strings.Split(strings.Trim(input, "\n"), "\n\n")
 	for _, group := range groups {
 		total := 0
 		items := strings.Split(group, "\n")
