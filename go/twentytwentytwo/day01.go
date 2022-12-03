@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-func part1(input string) int {
+func day01Part01(input string) int {
 	caloriesByElf := calculateCaloriesByElf(input)
 	return sum(caloriesByElf[len(caloriesByElf)-1:])
 }
 
-func part2(input string) int {
+func day01Part02(input string) int {
 	caloriesByElf := calculateCaloriesByElf(input)
 	return sum(caloriesByElf[len(caloriesByElf)-3:])
 }
