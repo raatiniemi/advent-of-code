@@ -35,11 +35,3 @@ func calculateCaloriesByElf(input string) []int {
 	sort.Ints(totalCaloriesByElf)
 	return totalCaloriesByElf
 }
-
-func sum(values []int) int {
-	sum := 0
-	for _, value := range values {
-		sum += value
-	}
-	return sum
-}
