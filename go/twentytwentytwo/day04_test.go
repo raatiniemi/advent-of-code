@@ -38,7 +38,7 @@ func TestDay04(t *testing.T) {
 
 	t.Run("day 4 part 2", func(t *testing.T) {
 		input := readFile("../../input/2022/day_4_2.txt")
-		expected := 2616
+		expected := 888
 
 		actual := day04Part02(input)
 
