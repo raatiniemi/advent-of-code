@@ -1,5 +1,11 @@
 package main
 
+import "strings"
+
+func readLines(input string) []string {
+	return strings.Split(strings.Trim(input, "\n"), "\n")
+}
+
 func sum(values []int) int {
 	sum := 0
 	for _, value := range values {
@@ -8,10 +14,10 @@ func sum(values []int) int {
 	return sum
 }
 
-func chunked(values []string, size int) [][]string {
-	var result [][]string
+func chunked[T string | RangeBound](values []T, size int) [][]T {
+	var result [][]T
 	for i := 0; i < len(values); i = i + size {
-		var items []string
+		var items []T
 		for _, item := range values[i : i+size] {
 			items = append(items, item)
 		}
