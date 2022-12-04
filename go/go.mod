@@ -1,4 +1,4 @@
-module adventofcode
+module gitlab.com/rahome/advent-of-code/go
 
 go 1.19
 
