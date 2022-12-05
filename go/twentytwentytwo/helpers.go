@@ -14,7 +14,7 @@ func sum(values []int) int {
 	return sum
 }
 
-func chunked[T string | RangeBound](values []T, size int) [][]T {
+func chunked[T any](values []T, size int) [][]T {
 	var result [][]T
 	for i := 0; i < len(values); i = i + size {
 		var items []T
