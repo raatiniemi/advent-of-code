@@ -25,6 +25,14 @@ func min[T Number](lhs T, rhs T) T {
 	return rhs
 }
 
+func characters(input string) []string {
+	var chars []string
+	for _, char := range input {
+		chars = append(chars, string(char))
+	}
+	return chars
+}
+
 func chunked[T any](values []T, size int) [][]T {
 	var result [][]T
 	for i := 0; i < len(values); i = i + size {
