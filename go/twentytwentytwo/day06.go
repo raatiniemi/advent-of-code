@@ -14,8 +14,8 @@ func findStartOfPacketMarker(input string, size int) int {
 		for _, char := range chars {
 			s[char] = true
 		}
-		if len(chars) == len(s) {
-			result = strings.Index(input, strings.Join(chars, "")) + len(s)
+		if size == len(s) {
+			result = strings.Index(input, strings.Join(chars, "")) + size
 			break
 		}
 	}
